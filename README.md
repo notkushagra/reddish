@@ -10,6 +10,11 @@ Reason: because I'm a developer who **loves to understand how things work under 
 ## Project Goals
 Core idea—store key-value pairs in memory, handle basic commands (GET, SET, DEL), and optionally write to disk.
 
+### Things to keep in mind
+0. Focus on building MVP first.
+1. Probably use go routines to handle multiple instances.
+2. Try to make it concurrent.
+
 ### Implementation Steps
 1. Use RESP protocol
 2. Build your own parser.
