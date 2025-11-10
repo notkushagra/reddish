@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"io"
 	"net"
 )
 
@@ -17,13 +18,13 @@ func handleConnection(conn net.Conn) {
 	defer closeConnection(conn)
 
 	fmt.Printf("Accepted %s\n", conn.RemoteAddr().String())
-	// scanner := bufio.NewScanner(conn)
-	// reader := bufio.NewReader(conn)
-	// Create a buffer to read data into
 	buffer := make([]byte, 1024)
 	for {
 		n, err := conn.Read(buffer)
-		if err != nil {
+		if err == io.EOF {
+			fmt.Println("Reached EOF")
+			return
+		} else if err != nil {
 			fmt.Println("Error:", err)
 			return
 		}
