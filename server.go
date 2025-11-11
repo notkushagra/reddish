@@ -60,9 +60,22 @@ func (r *ReddishServer) handleConnection(conn net.Conn) {
 			return
 		}
 
-		fmt.Printf("Recieved: %v\n", string(buffer[:n]))
+		cmdHandler := &ReddishCmdHandler{}
+		input := string(buffer[:n])
+		tokens, err := cmdHandler.ParseArgs(input)
+		if err != nil {
+			return
+		}
 
-		ret := "+OK\r\n"
+		fmt.Printf("tokens:%v\n", tokens)
+		fmt.Printf("len(tokens):%v\n", len(tokens))
+
+		ret, err := cmdHandler.HandleCommand(tokens)
+		if err != nil {
+			fmt.Println("Error:", err)
+			return
+		}
+
 		_, err = conn.Write([]byte(ret))
 		if err != nil {
 			fmt.Println("Error:", err)
